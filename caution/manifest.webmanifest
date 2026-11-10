@@ -1,0 +1,1 @@
+{"name":"RendsMaCaution","short_name":"MaCaution","description":"Calculez ce que votre propriétaire vous doit et générez vos courriers.","lang":"fr","start_url":"./","scope":"./","display":"standalone","background_color":"#faf7f0","theme_color":"#14633f","icons":[{"src":"icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any"}]}

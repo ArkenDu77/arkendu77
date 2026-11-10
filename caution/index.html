@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RendsMaCaution : calculez ce que votre propriétaire vous doit (caution non rendue)</title>
+<meta name="description" content="Caution non rendue ? Calculez en 30 secondes la somme que votre propriétaire vous doit, pénalité légale de 10 % du loyer par mois de retard comprise, et générez votre mise en demeure.">
+<meta property="og:title" content="Caution non rendue ? Calculez ce que votre propriétaire vous doit">
+<meta property="og:description" content="La loi prévoit 10 % de votre loyer par mois de retard. Calcul gratuit en 30 secondes, courriers prêts à envoyer.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#14633f">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Quel est le délai pour rendre un dépôt de garantie ?","acceptedAnswer":{"@type":"Answer","text":"Un mois à compter de la remise des clés si l'état des lieux de sortie est conforme à celui d'entrée, deux mois dans le cas contraire (article 22 de la loi du 6 juillet 1989)."}},
+{"@type":"Question","name":"Quelle pénalité si le propriétaire rend la caution en retard ?","acceptedAnswer":{"@type":"Answer","text":"Le dépôt restant dû est majoré de 10 % du loyer mensuel hors charges pour chaque mois de retard commencé. Un seul jour de retard compte pour un mois entier."}},
+{"@type":"Question","name":"Le propriétaire peut-il garder la caution pour repeindre ?","acceptedAnswer":{"@type":"Answer","text":"Seulement si une dégradation apparaît en comparant les états des lieux d'entrée et de sortie, et s'il fournit un justificatif. L'usure normale liée au temps (vétusté) reste à sa charge."}}
+]}
+</script>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a class="logo" href="./">RendsMa<span>Caution</span></a>
+    <nav><a href="#faq">Questions</a><a href="guides/">Guides</a></nav>
+  </header>
+
+  <main>
+  <div class="hero">
+    <div>
+      <h1>Caution pas rendue&nbsp;? Votre propriétaire vous doit <mark>10&nbsp;% du loyer par mois de retard</mark>.</h1>
+      <p class="lead">C'est écrit dans la loi, et presque personne ne le réclame. Calculez la somme exacte en 30 secondes, puis envoyez la lettre qui la réclame.</p>
+      <ul class="proofs">
+        <li>Calcul fondé sur l'article 22 de la loi du 6 juillet 1989</li>
+        <li>Rien n'est envoyé sur un serveur : vos données restent sur votre téléphone</li>
+        <li>Sans inscription, sans e-mail</li>
+      </ul>
+    </div>
+
+    <form class="card" id="calc" novalidate>
+      <h2 style="font-size:1.25rem;margin-bottom:.2em">Combien vous doit-il&nbsp;?</h2>
+      <p class="small muted" style="margin:0">Gratuit, sans inscription. Vos données restent sur votre appareil.</p>
+      <div class="row">
+        <div><label for="loyer">Loyer mensuel <small>hors charges, en €</small></label>
+          <input id="loyer" name="loyer" inputmode="decimal" autocomplete="off" placeholder="750"></div>
+        <div><label for="depot">Caution versée <small>dépôt de garantie, en €</small></label>
+          <input id="depot" name="depot" inputmode="decimal" autocomplete="off" placeholder="750"></div>
+      </div>
+      <label for="cles">Date de remise des clés</label>
+      <input id="cles" name="cles" type="date">
+      <label for="edl">État des lieux de sortie</label>
+      <select id="edl" name="edl">
+        <option value="conforme">Identique à l'entrée (aucune dégradation notée)</option>
+        <option value="differences">Des différences ont été notées</option>
+        <option value="aucun">Il n'y a pas eu d'état des lieux de sortie</option>
+      </select>
+
+      <details id="plus">
+        <summary>Préciser ma situation (remboursement partiel, meublé…)</summary>
+        <label for="bail">Type de location</label>
+        <select id="bail" name="bail">
+          <option value="vide">Location vide (résidence principale)</option>
+          <option value="meuble">Location meublée (résidence principale)</option>
+          <option value="autre">Autre : saisonnier, parking, commercial…</option>
+        </select>
+        <div class="row">
+          <div><label for="restitue">Déjà remboursé <small>en €, 0 si rien</small></label>
+            <input id="restitue" name="restitue" inputmode="decimal" autocomplete="off" placeholder="0"></div>
+          <div><label for="dateRestitution">Le <small>date du remboursement</small></label>
+            <input id="dateRestitution" name="dateRestitution" type="date"></div>
+        </div>
+        <label for="retenuesAcceptees">Retenues que vous acceptez <small>en €. Laissez vide si vous utilisez l'étape 2.</small></label>
+        <input id="retenuesAcceptees" name="retenuesAcceptees" inputmode="decimal" autocomplete="off" placeholder="0">
+        <label class="check"><input type="checkbox" id="adresse" name="adresse" checked> <span>J'ai communiqué ma nouvelle adresse au bailleur</span></label>
+        <label class="check"><input type="checkbox" id="copro" name="copro"> <span>Le logement est dans un immeuble en copropriété</span></label>
+      </details>
+
+      <div id="resultat" aria-live="polite"></div>
+    </form>
+  </div>
+
+  <section class="block" id="etape-retenues">
+    <h2><span class="stepnum">2</span>Il a gardé de l'argent&nbsp;? Vérifiez chaque retenue</h2>
+    <p class="muted narrow">Un bailleur ne peut retenir que des sommes justifiées, pour des dégradations constatées entre l'entrée et la sortie. L'usure normale reste à sa charge. Ajoutez chaque ligne retenue&nbsp;: l'outil calcule la part contestable.</p>
+    <div id="retenues"></div>
+    <div class="btns"><button type="button" class="btn ghost" id="add-retenue">+ Ajouter une retenue</button></div>
+    <div id="retenues-total"></div>
+  </section>
+
+  <section class="block" id="etape-courriers">
+    <h2><span class="stepnum">3</span>Vos courriers, prêts à envoyer</h2>
+    <p class="muted narrow">Complétez ces informations une seule fois. Elles ne quittent pas votre appareil.</p>
+    <div class="card">
+      <div class="row">
+        <div><label for="nom">Votre prénom et nom</label><input id="nom" autocomplete="name"></div>
+        <div><label for="bailleur">Nom du bailleur ou de l'agence</label><input id="bailleur" autocomplete="off"></div>
+      </div>
+      <label for="monAdresse">Votre adresse actuelle <small>celle où vous recevrez le remboursement</small></label>
+      <input id="monAdresse" autocomplete="street-address">
+      <label for="adresseBailleur">Adresse du bailleur ou de l'agence</label>
+      <input id="adresseBailleur" autocomplete="off">
+      <label for="logement">Adresse du logement que vous avez quitté</label>
+      <input id="logement" autocomplete="off">
+      <div class="row">
+        <div><label for="dateBail">Date de signature du bail <small>facultatif</small></label><input id="dateBail" type="date"></div>
+        <div><label for="ville">Fait à <small>votre ville</small></label><input id="ville" autocomplete="address-level2"></div>
+      </div>
+    </div>
+    <div class="tabs" role="tablist" id="tabs"></div>
+    <div id="lettre-zone"></div>
+  </section>
+
+  <section class="block" id="etape-suivi">
+    <h2><span class="stepnum">4</span>Votre plan d'action, daté</h2>
+    <p class="muted narrow">La plupart des bailleurs paient après la mise en demeure. Si ce n'est pas le cas, voici la suite, étape par étape. Cochez au fur et à mesure et ajoutez les rappels à votre agenda.</p>
+    <label for="planStart" style="max-width:260px">Je commence le</label>
+    <input id="planStart" type="date" style="max-width:260px">
+    <ol class="plan" id="plan"></ol>
+    <div class="btns">
+      <button type="button" class="btn" id="ics">Ajouter les rappels à mon agenda</button>
+      <button type="button" class="btn ghost" id="reset">Effacer mes données</button>
+    </div>
+  </section>
+
+  <section class="block">
+    <h2>Pourquoi ça marche</h2>
+    <div class="grid3">
+      <div class="card"><h3>La loi est de votre côté</h3><p class="muted">Le délai est d'un mois, deux au maximum. Après, la majoration s'applique de plein droit, sans que vous ayez à prouver un préjudice.</p></div>
+      <div class="card"><h3>Le temps joue pour vous</h3><p class="muted">Chaque mois commencé ajoute 10&nbsp;% du loyer. Un bailleur qui lit ce chiffre noir sur blanc a intérêt à payer vite.</p></div>
+      <div class="card"><h3>Les recours sont gratuits</h3><p class="muted">La conciliation ne coûte rien et le juge peut être saisi sans avocat. Un dossier propre suffit.</p></div>
+    </div>
+  </section>
+
+  <section class="block faq narrow" id="faq">
+    <h2>Questions fréquentes</h2>
+    <details><summary>Caution ou dépôt de garantie, quelle différence&nbsp;?</summary><p>On dit «&nbsp;caution&nbsp;» au quotidien, mais la somme versée à l'entrée s'appelle le dépôt de garantie. La caution désigne en droit la personne qui se porte garante. Les courriers générés utilisent le terme exact.</p></details>
+    <details><summary>Quel est le délai légal de restitution&nbsp;?</summary><p>Un mois à compter de la remise des clés si l'état des lieux de sortie est conforme à celui d'entrée. Deux mois s'il y a des différences. Ces règles valent pour les locations vides et meublées servant de résidence principale.</p></details>
+    <details><summary>Comment se calcule la pénalité de retard&nbsp;?</summary><p>10&nbsp;% du loyer mensuel hors charges pour chaque mois de retard commencé. Elle se calcule sur le loyer, pas sur le dépôt. Un seul jour de retard compte pour un mois. Elle n'est pas due si vous n'avez pas transmis votre nouvelle adresse.</p></details>
+    <details><summary>Que peut retenir le propriétaire&nbsp;?</summary><p>Des loyers ou charges impayés, et le coût de dégradations qui apparaissent en comparant les deux états des lieux, sur justificatif. Il ne peut pas vous facturer l'usure normale&nbsp;: une peinture de sept ans est à refaire à ses frais.</p></details>
+    <details><summary>Faut-il un avocat&nbsp;?</summary><p>Non. La commission départementale de conciliation et le conciliateur de justice sont gratuits. Le juge des contentieux de la protection peut être saisi sans avocat pour ce type de litige.</p></details>
+    <details><summary>Combien de temps ai-je pour agir&nbsp;?</summary><p>Trois ans à compter du jour où la somme aurait dû vous être rendue. Mieux vaut agir tôt&nbsp;: les preuves sont fraîches et la majoration continue de courir.</p></details>
+    <details><summary>Ce site remplace-t-il un juriste&nbsp;?</summary><p>Non. Il fournit une information juridique générale et des modèles de courriers à partir de ce que vous saisissez. Pour un conseil sur votre cas, contactez gratuitement l'ADIL de votre département ou un avocat.</p></details>
+  </section>
+  </main>
+
+  <footer>
+    <p><a href="guides/">Guides</a><a href="mentions-legales.html">Mentions légales, CGV et confidentialité</a></p>
+    <p>RendsMaCaution fournit une information juridique générale et des modèles de documents. Ce n'est pas une consultation juridique. Montants calculés d'après vos saisies, sans garantie de résultat.</p>
+  </footer>
+</div>
+<div id="print-area"></div>
+<script src="config.js"></script>
+<script src="calc.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
